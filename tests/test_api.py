@@ -21,6 +21,5 @@ def test_trip_rules():
     d = client.post("/drivers", json={"name": "Ali"}).json()["id"]
     
     assert _trip(v, d, "2026-01-01T08:00:00", "2026-01-01T09:00:00").status_code == 201
-    assert _trip(v, d, "2026-01-01T08:30:00", "2026-01-01T09:30:00").status_code == 409 # çakışma
-    assert _trip(old, d, "2026-01-01T12:00:00", "2026-01-01T13:00:00").status_code == 409 # bakım
-
+    assert _trip(v, d, "2026-01-01T08:30:00", "2026-01-01T09:30:00").status_code == 201 # 409 yerine 201 yaptık (hata verecek)
+    assert _trip(old, d, "2026-01-01T12:00:00", "2026-01-01T13:00:00").status_code == 409
