@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: motas
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD tanımlı değil, env dosyasını oluştur}
+      POSTGRES_DB: fleet
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U motas -d fleet"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg2://motas:${DB_PASSWORD}@db:5432/fleet
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

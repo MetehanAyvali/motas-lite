@@ -1,0 +1,8 @@
+.git
+.github
+.venv
+__pycache__
+*.db
+tests
+k8s
+.env
